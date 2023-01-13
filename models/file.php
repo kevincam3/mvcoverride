@@ -671,7 +671,7 @@ class rsfilesModelFile extends JModelAdmin
 		}
 
 		//load & bind existing data row already exist in table
-		$ExtraInfoTable->load(array('IdFile' => $data[FileId]));
+		$ExtraInfoTable->load(array('IdFile' => $data['FileId']));
 
 		//bind new data
 		if (!$ExtraInfoTable->bind($data))
