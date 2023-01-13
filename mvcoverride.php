@@ -40,12 +40,6 @@ class PlgSystemMVCOverride extends CMSPlugin
             require_once(JPATH_ROOT . '/plugins/system/mvcoverride/models/rsfiles.php');
             require_once(JPATH_ROOT . '/plugins/system/mvcoverride/views/rsfiles/view.html.php');
         }
-		{
-			require_once(JPATH_ROOT . '/plugins/system/mvcoverride/models/rsfiles.php');
-			require_once(JPATH_ROOT . '/plugins/system/mvcoverride/views/rsfiles/view.html.php');
-		}
-
-
 	}
 
 	public function &onUserBeforeDataValidation($form, &$data)
