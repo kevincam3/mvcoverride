@@ -147,7 +147,7 @@
                description="COM_RSFILES_FILE_DESCRIPTION_DESC"
                filter="JComponentHelper::filterText"
                buttons="true"
-               hide="rscomments,readmore,pagebreak"
+               hide="rscomments,rsfiles,readmore,pagebreak"
                width="90%"/>
         <field name="icon"
                type="hidden"/>
