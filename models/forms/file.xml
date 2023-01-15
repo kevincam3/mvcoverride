@@ -77,7 +77,7 @@
                type="radio"
                label="Display document as new"
                default="1"
-               class="btn-group"
+               class="btn-group btn-group-yesno"
                description="When unchecked the file will not display the list new files module">
             <option value="1">JYES</option>
             <option value="0">JNO</option>
