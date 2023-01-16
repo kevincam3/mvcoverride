@@ -162,6 +162,15 @@ EOD;
 			margin-left: 10px;
 			display: none;
 		}
+		
+		#filestatusid .input-group {
+		align-items: center;
+		}
+		#filestatusid .control-group {
+		flex-wrap: nowrap;
+		margin-bottom: 0;
+		margin-right: 1rem;
+        }
 		';
 
 		// Add styles

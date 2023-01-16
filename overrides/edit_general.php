@@ -49,8 +49,9 @@ foreach ($this->form->getFieldset('general') as $field)
 
 	{
 		$FileStatus = $field->value;
-		echo '<div id="filestatusid" style="display: flex">';
+		echo '<div id="filestatusid" style="display: flex; margin: 0 0 1rem">';
 	}
+    //if ($field->fieldname == 'FileRelatedToStatus')
 	$input = $extra ? RSFilesAdapterGrid::inputGroup($field->input, null, $extra) : $field->input;
 
 	if ($field->fieldname == 'FileRelatedToStatus')
