@@ -45,6 +45,8 @@ foreach ($this->form->getFieldset('general') as $field)
 			continue;
 	}
 
+    /* START RENDERING OF CUSTOM FIELDS  */
+
 	if ($field->fieldname == 'FileStatus')
 
 	{
@@ -54,16 +56,20 @@ foreach ($this->form->getFieldset('general') as $field)
     //if ($field->fieldname == 'FileRelatedToStatus')
 	$input = $extra ? RSFilesAdapterGrid::inputGroup($field->input, null, $extra) : $field->input;
 
+    // Handle and uploaded files
 	if ($field->fieldname == 'FileRelatedToStatus')
 	{
-		if ($field->value !== '' && in_array($FileStatus, array('0', '1', '2', '3', '5'), true))
+        // check if we have a related file and the file stats is not date only
+		if ($field->value !== '' && in_array($FileStatus, array('0', '1', '2', '3', '5')))
 		{
 			//load javascript to display field
 			if ($field->value !== 'Related File')
 			{
 				$js = '
                  jQuery(document).ready(function(){
-                 jQuery("#filestatusid .input-prepend").fadeIn("fast", function(){});
+                 document.querySelector("#filestatusid .input-group").style.display = "flex";
+                 document.querySelector("#filestatusid .input-group").style.alignContent = "baseline";
+                 jQuery("#filestatusid .input-group").fadeIn("fast", function(){});
                  jQuery("#jform_FileRelatedToStatus_name").attr("disabled", false);
                  jQuery("#jform_FileRelatedToStatus_name").attr("readonly", true);
             });
@@ -73,7 +79,9 @@ foreach ($this->form->getFieldset('general') as $field)
 			{
 				$js = '
 			     jQuery(document).ready(function(){
-                 jQuery("#filestatusid .input-prepend").fadeIn("fast", function(){});
+			     document.querySelector("#filestatusid .input-group").style.display = "flex";
+                 document.querySelector("#filestatusid .input-group").style.alignContent = "baseline";
+                 jQuery("#filestatusid .input-group").fadeIn("fast", function(){});
                  jQuery("#jform_FileRelatedToStatus_name").attr("disabled", true);
                  jQuery("#jform_FileRelatedToStatus_name").attr("readonly", false);
             });
@@ -96,7 +104,8 @@ foreach ($this->form->getFieldset('general') as $field)
 				//load javascript to display field
 				$js = '
             jQuery(document).ready(function(){
-           
+                 document.querySelector("#filestatusid .field-calendar .input-group").style.display = "flex";
+                 document.querySelector("#filestatusid .field-calendar").style.width = "100%";
                  jQuery("#filestatusid .field-calendar").fadeIn("fast", function(){
                  jQuery("#jform_DateRelatedToStatus").attr("readonly", "readonly");});
             });
@@ -107,6 +116,8 @@ foreach ($this->form->getFieldset('general') as $field)
 			{
 				$js = '
             jQuery(document).ready(function(){
+                 document.querySelector("#filestatusid .field-calendar .input-group").style.display = "flex";
+                 document.querySelector("#filestatusid .field-calendar").style.width = "100%";
                  jQuery("#jform_DateRelatedToStatus").attr("disabled", true);
                  jQuery("#jform_DateRelatedToStatus").attr("value", "");
                  jQuery("#filestatusid .field-calendar").fadeIn("fast", function(){});
@@ -118,6 +129,8 @@ foreach ($this->form->getFieldset('general') as $field)
 			{
 				$js = '
             jQuery(document).ready(function(){
+                 document.querySelector("#filestatusid .field-calendar .input-group").style.display = "flex";
+                 document.querySelector("#filestatusid .field-calendar").style.width = "100%";
                  jQuery("#jform_DateRelatedToStatus").attr("disabled", true);
                  jQuery("#jform_DateRelatedToStatus").attr("value", "");
             });
@@ -132,7 +145,7 @@ foreach ($this->form->getFieldset('general') as $field)
 	{
 		echo RSFilesAdapterGrid::renderField($field->label, $input, false, JText::_($field->description));
 	}
-
+    /* END RENDERING OF CUSTOM FIELDS  */
 	if ($field->fieldname == 'FilePath' && $this->type != 'folder')
 	{
 		$icon = 'fa fa-file';
