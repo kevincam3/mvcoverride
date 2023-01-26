@@ -73,9 +73,9 @@ if ($this->params->get('show_page_heading') != 0)
 					} ?>
                 </th>
                 <th width="30%" style="text-align: center;"><?php echo JText::_('Expiry/Renewals'); ?></th>
-                <th width="10%">&nbsp;</th>
+             
 				<?php if ($this->config->list_show_date) { ?>
-                    <th width="12%"><?php
+                    <th width="30%"><?php
 					if (JFactory::getApplication()->scope !== 'mod_rsfiles_newest' && JFactory::getApplication()->scope !== 'mod_rsfiles_list_tags')
 					{
 						echo JHtml::_('grid.sort', 'COM_RSFILES_FILE_DATE', 'date', $this->listDirn, $this->listOrder);
@@ -84,7 +84,7 @@ if ($this->params->get('show_page_heading') != 0)
 					{
 						echo JText::_('Date added');
 					} ?></th><?php } ?>
-
+                     <th width="10%">&nbsp;</th>
             </tr>
             </thead>
             <tbody>
@@ -190,6 +190,8 @@ if ($this->params->get('show_page_heading') != 0)
                            style="margin-bottom: 0;"><?php echo $FileRelatedName; ?></a>
 						<?php if ($item->FileStatus == 'Renewed' && ($item->DateRelatedToStatus != '' && $item->DateRelatedToStatus != '11/1111' && $item->DateRelatedToStatus != '11/-0001')) echo '<br/>' . $item->DateRelatedToStatus ?>
                     </td>
+					<?php if ($this->config->list_show_date) { ?>
+                        <td><?php if ($item->type != 'folder') echo $item->dateadded; ?></td><?php } ?>
                     <td>
 						<?php
 						if ($item->type != 'folder')
@@ -263,8 +265,7 @@ if ($this->params->get('show_page_heading') != 0)
 
 								<?php } ?>
                     </td>
-					<?php if ($this->config->list_show_date) { ?>
-                        <td><?php if ($item->type != 'folder') echo $item->dateadded; ?></td><?php } ?>
+					
                 </tr>
 			<?php } ?>
 			<?php } else { ?>

@@ -51,7 +51,8 @@ foreach ($this->form->getFieldset('general') as $field)
 
 	{
 		$FileStatus = $field->value;
-		echo '<div id="filestatusid" style="display: flex; margin: 0 0 1rem">';
+		/*echo '<div id="filestatusid" style="display: flex; margin: 0 0 1rem">';*/
+		echo '<div id="filestatusid" class="control-group" style="display: flex">';
 	}
     //if ($field->fieldname == 'FileRelatedToStatus')
 	$input = $extra ? RSFilesAdapterGrid::inputGroup($field->input, null, $extra) : $field->input;
