@@ -89,6 +89,7 @@ foreach ($this->form->getFieldset('general') as $field)
 			}
 			JFactory::getDocument()->addScriptDeclaration($js);
 		}
+		echo '<div id="FileRelatedToStatus_div"   style="width:30%; margin-left:5px;">';
 		echo $input;
 		//echo RSFilesAdapterGrid::renderField($field->label, $input, false, JText::_($field->description));
 	}
@@ -99,13 +100,38 @@ foreach ($this->form->getFieldset('general') as $field)
 			$field->value = '';
 		}
 		{
-			if ($FileStatus == '4' || ($FileStatus == '1' && $field->value !== ''))
+			if ($FileStatus === '' )
+			{
+				//load javascript to display field
+				$js = '
+				jQuery(document).ready(function(){
+					  jQuery("#FileRelatedToStatus_div").fadeOut("fast");
+					 jQuery("#filestatusid .field-calendar").fadeIn("fast", function(){
+                 jQuery("#jform_DateRelatedToStatus").attr("readonly", "readonly");});
+					
+				});
+				 
+            ';
+				JFactory::getDocument()->addScriptDeclaration($js);
+			}else if ($FileStatus == '1'  && $field->value !== '' )
+			{
+				//load javascript to display field
+				$js = '
+            jQuery(document).ready(function(){
+				  jQuery("#FileRelatedToStatus_div").fadeIn("fast");
+                 jQuery("#filestatusid .field-calendar").fadeIn("fast", function(){
+                 jQuery("#jform_DateRelatedToStatus").attr("readonly", "readonly");});
+            });
+            ';
+				JFactory::getDocument()->addScriptDeclaration($js);
+			}else if ($FileStatus == '4'     )
 			{
 				//load javascript to display field
 				$js = '
             jQuery(document).ready(function(){
                  document.querySelector("#filestatusid .field-calendar .input-group").style.display = "flex";
                  document.querySelector("#filestatusid .field-calendar").style.width = "100%";
+				 jQuery("#FileRelatedToStatus_div").fadeOut("fast");
                  jQuery("#filestatusid .field-calendar").fadeIn("fast", function(){
                  jQuery("#jform_DateRelatedToStatus").attr("readonly", "readonly");});
             });
@@ -118,6 +144,7 @@ foreach ($this->form->getFieldset('general') as $field)
             jQuery(document).ready(function(){
                  document.querySelector("#filestatusid .field-calendar .input-group").style.display = "flex";
                  document.querySelector("#filestatusid .field-calendar").style.width = "100%";
+				  jQuery("#FileRelatedToStatus_div").fadeIn("fast");
                  jQuery("#jform_DateRelatedToStatus").attr("disabled", true);
                  jQuery("#jform_DateRelatedToStatus").attr("value", "");
                  jQuery("#filestatusid .field-calendar").fadeIn("fast", function(){});
@@ -131,6 +158,7 @@ foreach ($this->form->getFieldset('general') as $field)
             jQuery(document).ready(function(){
                  document.querySelector("#filestatusid .field-calendar .input-group").style.display = "flex";
                  document.querySelector("#filestatusid .field-calendar").style.width = "100%";
+				 jQuery("#FileRelatedToStatus_div").fadeIn("fast");
                  jQuery("#jform_DateRelatedToStatus").attr("disabled", true);
                  jQuery("#jform_DateRelatedToStatus").attr("value", "");
             });

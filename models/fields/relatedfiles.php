@@ -88,6 +88,18 @@ jQuery(document).ready(function () {
         const FileStatusOptions = [0, 2, 3, 5];
         
         //What to do if we have selected an option that requires a related file
+		if ( isNaN(parseInt(event.target.value))) { 
+			  jQuery("#FileRelatedToStatus_div").fadeOut("fast");
+			 // jQuery('#rsfFoldersModal').fadeOut('fast');
+		}else if(parseInt(event.target.value)==1) { // renewed
+			  jQuery("#FileRelatedToStatus_div").fadeIn("fast");
+			  jQuery("#filestatusid .field-calendar").fadeIn("fast");
+		}else if(parseInt(event.target.value)==4) { // date only
+			  jQuery("#FileRelatedToStatus_div").fadeOut("fast");
+			  jQuery("#filestatusid .field-calendar").fadeIn("fast");
+		} else {
+			jQuery("#FileRelatedToStatus_div").fadeIn("fast");
+		}
         if (FileStatusOptions.includes(parseInt(event.target.value))) {
          // Add the class to validate the related file
             event.target.classList.add("validate-relatedfile");
