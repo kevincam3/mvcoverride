@@ -352,7 +352,10 @@ class RSFilesFiles
 				if ($FileStatusResult)
 				{
 					$element->FileRelatedToStatus = $FileStatusResult->FileRelatedToStatus;
-					$element->DateRelatedToStatus = date("m/Y", strtotime($FileStatusResult->DateRelatedToStatus));
+                    if($FileStatusResult->DateRelatedToStatus === '0000-00-00 00:00:00')
+                        $element->DateRelatedToStatus = '';
+                    else
+                        $element->DateRelatedToStatus = date("m/Y", strtotime($FileStatusResult->DateRelatedToStatus));
 					switch ($FileStatusResult->FileStatus)
 					{
 						case 0:
