@@ -45,31 +45,24 @@ foreach ($this->form->getFieldset('general') as $field)
 			continue;
 	}
 
-    /* START RENDERING OF CUSTOM FIELDS  */
-
 	if ($field->fieldname == 'FileStatus')
 
 	{
 		$FileStatus = $field->value;
-		echo '<div id="filestatusid" style="display: flex; margin: 0 0 1rem">';
+		echo '<div id="filestatusid" class="control-group" style="display: flex">';
 	}
-    //if ($field->fieldname == 'FileRelatedToStatus')
 	$input = $extra ? RSFilesAdapterGrid::inputGroup($field->input, null, $extra) : $field->input;
 
-    // Handle and uploaded files
 	if ($field->fieldname == 'FileRelatedToStatus')
 	{
-        // check if we have a related file and the file stats is not date only
-		if ($field->value !== '' && in_array($FileStatus, array('0', '1', '2', '3', '5')))
+		if ($field->value !== '' && in_array($FileStatus, array('0', '1', '2', '3', '5'), true))
 		{
 			//load javascript to display field
 			if ($field->value !== 'Related File')
 			{
 				$js = '
                  jQuery(document).ready(function(){
-                 document.querySelector("#filestatusid .input-group").style.display = "flex";
-                 document.querySelector("#filestatusid .input-group").style.alignContent = "baseline";
-                 jQuery("#filestatusid .input-group").fadeIn("fast", function(){});
+                 jQuery("#filestatusid .input-prepend").fadeIn("fast", function(){});
                  jQuery("#jform_FileRelatedToStatus_name").attr("disabled", false);
                  jQuery("#jform_FileRelatedToStatus_name").attr("readonly", true);
             });
@@ -79,9 +72,7 @@ foreach ($this->form->getFieldset('general') as $field)
 			{
 				$js = '
 			     jQuery(document).ready(function(){
-			     document.querySelector("#filestatusid .input-group").style.display = "flex";
-                 document.querySelector("#filestatusid .input-group").style.alignContent = "baseline";
-                 jQuery("#filestatusid .input-group").fadeIn("fast", function(){});
+                 jQuery("#filestatusid .input-prepend").fadeIn("fast", function(){});
                  jQuery("#jform_FileRelatedToStatus_name").attr("disabled", true);
                  jQuery("#jform_FileRelatedToStatus_name").attr("readonly", false);
             });
@@ -89,7 +80,9 @@ foreach ($this->form->getFieldset('general') as $field)
 			}
 			JFactory::getDocument()->addScriptDeclaration($js);
 		}
+			echo '<div id="FileRelatedToStatus_div"   style="width:30%; margin-left:5px;">';
 		echo $input;
+		echo '</div>';
 		//echo RSFilesAdapterGrid::renderField($field->label, $input, false, JText::_($field->description));
 	}
     elseif ($field->fieldname == 'DateRelatedToStatus')
@@ -99,13 +92,35 @@ foreach ($this->form->getFieldset('general') as $field)
 			$field->value = '';
 		}
 		{
-			if ($FileStatus == '4' || ($FileStatus == '1' && $field->value !== ''))
+			if ($FileStatus === '' )
+			{
+				//load javascript to display field
+				$js = '
+				jQuery(document).ready(function(){
+					  jQuery("#FileRelatedToStatus_div").fadeOut("fast");
+					 jQuery("#filestatusid .field-calendar").fadeOut();
+					
+				});
+				 
+            ';
+				JFactory::getDocument()->addScriptDeclaration($js);
+			}else if ($FileStatus == '1'  && $field->value !== '' )
 			{
 				//load javascript to display field
 				$js = '
             jQuery(document).ready(function(){
-                 document.querySelector("#filestatusid .field-calendar .input-group").style.display = "flex";
-                 document.querySelector("#filestatusid .field-calendar").style.width = "100%";
+				  jQuery("#FileRelatedToStatus_div").fadeIn("fast");
+                 jQuery("#filestatusid .field-calendar").fadeIn("fast", function(){
+                 jQuery("#jform_DateRelatedToStatus").attr("readonly", "readonly");});
+            });
+            ';
+				JFactory::getDocument()->addScriptDeclaration($js);
+			}else if ($FileStatus == '4'     )
+			{
+				//load javascript to display field
+				$js = '
+            jQuery(document).ready(function(){
+				    jQuery("#FileRelatedToStatus_div").fadeOut("fast");
                  jQuery("#filestatusid .field-calendar").fadeIn("fast", function(){
                  jQuery("#jform_DateRelatedToStatus").attr("readonly", "readonly");});
             });
@@ -116,8 +131,7 @@ foreach ($this->form->getFieldset('general') as $field)
 			{
 				$js = '
             jQuery(document).ready(function(){
-                 document.querySelector("#filestatusid .field-calendar .input-group").style.display = "flex";
-                 document.querySelector("#filestatusid .field-calendar").style.width = "100%";
+				  jQuery("#FileRelatedToStatus_div").fadeIn("fast");
                  jQuery("#jform_DateRelatedToStatus").attr("disabled", true);
                  jQuery("#jform_DateRelatedToStatus").attr("value", "");
                  jQuery("#filestatusid .field-calendar").fadeIn("fast", function(){});
@@ -129,8 +143,7 @@ foreach ($this->form->getFieldset('general') as $field)
 			{
 				$js = '
             jQuery(document).ready(function(){
-                 document.querySelector("#filestatusid .field-calendar .input-group").style.display = "flex";
-                 document.querySelector("#filestatusid .field-calendar").style.width = "100%";
+				 jQuery("#FileRelatedToStatus_div").fadeIn("fast");
                  jQuery("#jform_DateRelatedToStatus").attr("disabled", true);
                  jQuery("#jform_DateRelatedToStatus").attr("value", "");
             });
@@ -145,7 +158,7 @@ foreach ($this->form->getFieldset('general') as $field)
 	{
 		echo RSFilesAdapterGrid::renderField($field->label, $input, false, JText::_($field->description));
 	}
-    /* END RENDERING OF CUSTOM FIELDS  */
+
 	if ($field->fieldname == 'FilePath' && $this->type != 'folder')
 	{
 		$icon = 'fa fa-file';
