@@ -121,7 +121,7 @@ jQuery(document).ready(function () {
             });
             jQuery("#jform_FileRelatedToStatus_name").removeAttr("readonly");
             jQuery("#jform_FileRelatedToStatus_name").attr("disabled", true);
-        } else if(parseInt(event.target.value) == 1){
+        } else if(parseInt(event.target.value) === 1){
                 
                 //Add the class to validate the related file
                 event.target.classList.add("validate-relatedfile");
@@ -133,8 +133,10 @@ jQuery(document).ready(function () {
                 jQuery("#jform_FileRelatedToStatus_name").attr("disabled", true);
                 jQuery("#jform_DateRelatedToStatus").attr("disabled", true);
                 jQuery("#filestatusid .field-calendar").fadeIn("fast");
-                document.querySelector("#filestatusid .field-calendar .input-group").style.display = "flex";
+                document.querySelector("#filestatusid .input-group").style.display = "flex";
                 document.querySelector("#filestatusid .field-calendar").style.width = "100%";
+                document.querySelector("#filestatusid .input-group").style.alignContent = "baseline";
+                
             });
             jQuery("#jform_FileRelatedToStatus_name").removeAttr("readonly");
             jQuery("#jform_FileRelatedToStatus_name").attr("disabled", true);
