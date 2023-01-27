@@ -173,7 +173,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
                             <a href="<?php echo JRoute::_('index.php?option=com_rsfiles&relatedfile=1&layout=download&path=' . rsfilesHelper::encode($item->FileRelatedToStatus) . '&Itemid=' . $this->itemid) ?>"
                                class="rsfiles-file"
                                title="<?php echo $FileRelatedName; ?>"><?php echo $FileRelatedName; ?></a>
-							<?php if ($item->FileStatus == 'Renewed' && $item->DateRelatedToStatus != '') echo '<br/>' . $item->DateRelatedToStatus ?>
+							<?php if ($item->FileStatus == 'Renewed' && $item->DateRelatedToStatus != '' && $item->DateRelatedToStatus != '11/1111') echo '<br/>' . $item->DateRelatedToStatus ?>
                         </td>
                         <td>
 							<?php if ($item->type != 'folder') { ?>

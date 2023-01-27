@@ -56,7 +56,7 @@ function rs_placeholder(what,other) {
 
 jQuery(document).ready(function () {
 
-    // check if the file status is set to No State and remove the validate-related-file class
+    // check if the file status is set to No Status and if so remove the validate-related-file class because we no longer need to require and related file
     const fileStatus = document.querySelector("#jform_FileStatus");
     if(fileStatus.value == '') {
         fileStatus.classList.remove("validate-relatedfile");
@@ -85,6 +85,7 @@ jQuery(document).ready(function () {
 	//things to do as the file status drop down is selected/modified
     jQuery("#jform_FileStatus").on("change", function (event, params) {
     
+        //These are the options that require a related file
         const FileStatusOptions = [0, 2, 3, 5];
         
         //What to do if we have selected an option that requires a related file
@@ -121,6 +122,9 @@ jQuery(document).ready(function () {
             jQuery("#jform_FileRelatedToStatus_name").removeAttr("readonly");
             jQuery("#jform_FileRelatedToStatus_name").attr("disabled", true);
         } else if(parseInt(event.target.value) == 1){
+                
+                //Add the class to validate the related file
+                event.target.classList.add("validate-relatedfile");
                 
                 //Show the related file picker and show the calendar picker
                 jQuery("#jform_DateRelatedToStatus").val('');
