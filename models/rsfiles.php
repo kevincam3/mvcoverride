@@ -364,8 +364,14 @@ class rsfilesModelRsfiles extends JModelLegacy
 		}
 
 		$briefcase = rsfilesHelper::isBriefcase() ? '.briefcase' : '';
-
-		return JFactory::getApplication()->getUserStateFromRequest('com_rsfiles' . $briefcase . '.filter_order', 'filter_order', $params->get('order', 'name'));
+		
+		$order = 'name';
+		
+		if(is_object($params)){
+			
+			$order = $params->get('order', 'name');
+		}
+		return JFactory::getApplication()->getUserStateFromRequest('com_rsfiles' . $briefcase . '.filter_order', 'filter_order', $order);
 	}
 
 	public function getOrderDir()
@@ -3311,7 +3317,7 @@ class rsfilesModelRsfiles extends JModelLegacy
 			if (!JFactory::getApplication()->input->get('relatedfile', 0))
 			{
 				// check if we need to override any params because were in the module
-				if (JFactory::getApplication()->scope == 'mod_rsfiles_list_tags')
+				if (JFactory::getApplication()->scope == 'mod_rsfiles_list_tags' && is_object(JFactory::getApplication()->getUserState('mod_rsfiles_list_tags.params')))
 				{
 					$folder = JFactory::getApplication()->getUserState('mod_rsfiles_list_tags.params')->get('folder');
 				}
