@@ -56,12 +56,7 @@ function rs_placeholder(what,other) {
 
 jQuery(document).ready(function () {
 
-    // check if the file status is set to No Status and if so remove the validate-related-file class because we no longer need to require and related file
-    const fileStatus = document.querySelector("#jform_FileStatus");
-    if(fileStatus.value == '') {
-        fileStatus.classList.remove("validate-relatedfile");
-    }
-    	Joomla.calendarDateSet = function()
+	Joomla.calendarDateSet = function()
 	{
         //If date is set and file status is "Renewed" then enable the field
         let DateRelatedToStatus = jQuery('#jform_DateRelatedToStatus').attr('data-alt-value');
@@ -85,19 +80,28 @@ jQuery(document).ready(function () {
 	//things to do as the file status drop down is selected/modified
     jQuery("#jform_FileStatus").on("change", function (event, params) {
     
-        //These are the options that require a related file
         const FileStatusOptions = [0, 2, 3, 5];
-        
+        jQuery("#jform_FileRelatedToStatus_name").attr("value","Related File");
+		 jQuery("#jform_DateRelatedToStatus").val('');
         //What to do if we have selected an option that requires a related file
+		if ( isNaN(parseInt(event.target.value))) { 
+			  jQuery("#FileRelatedToStatus_div").hide();
+			 // jQuery('#rsfFoldersModal').fadeOut('fast');
+		}else if(parseInt(event.target.value)==1) { // renewed
+			  jQuery("#FileRelatedToStatus_div").fadeIn("fast");
+			  jQuery("#filestatusid .field-calendar").fadeIn("fast");
+		}else if(parseInt(event.target.value)==4) { // date only
+			  
+			  jQuery("#filestatusid .field-calendar").fadeIn("fast");
+			  jQuery("#FileRelatedToStatus_div").hide();
+		} else {
+			jQuery("#FileRelatedToStatus_div").fadeIn("fast");
+		}
         if (FileStatusOptions.includes(parseInt(event.target.value))) {
-         // Add the class to validate the related file
-            event.target.classList.add("validate-relatedfile");
-             document.querySelector("#filestatusid .input-group").style.display = "flex";
-             document.querySelector("#filestatusid .input-group").style.alignContent = "baseline";
         
             //Hide the calendar picker and show the related file picker
             jQuery("#filestatusid .field-calendar").fadeOut("fast", function () {
-                jQuery("#filestatusid .input-group").fadeIn("fast");
+                jQuery("#filestatusid .input-prepend").fadeIn("fast");
             });
             
             //Delete the calendar picker value
@@ -105,10 +109,10 @@ jQuery(document).ready(function () {
             
             //Disable the calendar picker so its value doesn't get submitted
             jQuery('#jform_DateRelatedToStatus').attr('disabled',true);
-        } else if (parseInt(event.target.value) === 4) {
+        } else if (parseInt(event.target.value) == 4) {
             
             //Hide the related file picker and show the calendar picker 
-            jQuery("#filestatusid .input-group").fadeOut("fast", function () {
+            jQuery("#filestatusid .input-prepend").fadeOut("fast", function () {
                 jQuery("#jform_FileRelatedToStatus_name").attr("value","Related File");
                 jQuery("#jform_FileRelatedToStatus_name").removeAttr("readonly");
                 jQuery("#jform_FileRelatedToStatus_name").attr("disabled", true);
@@ -116,40 +120,30 @@ jQuery(document).ready(function () {
                 jQuery("#jform_DateRelatedToStatus").val('');
                 jQuery("#jform_DateRelatedToStatus").attr("readonly","true");
                 jQuery("#filestatusid .field-calendar").fadeIn("fast");
-                document.querySelector("#filestatusid .field-calendar .input-group").style.display = "flex";
-                document.querySelector("#filestatusid .field-calendar").style.width = "100%";
             });
             jQuery("#jform_FileRelatedToStatus_name").removeAttr("readonly");
             jQuery("#jform_FileRelatedToStatus_name").attr("disabled", true);
-        } else if(parseInt(event.target.value) === 1){
-                
-                //Add the class to validate the related file
-                event.target.classList.add("validate-relatedfile");
+        } else if(parseInt(event.target.value) == 1){
                 
                 //Show the related file picker and show the calendar picker
                 jQuery("#jform_DateRelatedToStatus").val('');
-                jQuery("#filestatusid .input-group").fadeIn("fast", function () {
+                jQuery("#filestatusid .input-prepend").fadeIn("fast", function () {
                 jQuery("#jform_FileRelatedToStatus_name").removeAttr("readonly");
                 jQuery("#jform_FileRelatedToStatus_name").attr("disabled", true);
                 jQuery("#jform_DateRelatedToStatus").attr("disabled", true);
                 jQuery("#filestatusid .field-calendar").fadeIn("fast");
-                document.querySelector("#filestatusid .input-group").style.display = "flex";
-                document.querySelector("#filestatusid .field-calendar").style.width = "100%";
-                document.querySelector("#filestatusid .input-group").style.alignContent = "baseline";
                 
             });
             jQuery("#jform_FileRelatedToStatus_name").removeAttr("readonly");
             jQuery("#jform_FileRelatedToStatus_name").attr("disabled", true);
         } else {
-            jQuery("#filestatusid .input-group").fadeOut("fast", function () {
+            jQuery("#filestatusid .input-prepend").fadeOut("fast", function () {
                 jQuery("#jform_FileRelatedToStatus_name").attr("value","Related File");
             });
             jQuery("#jform_FileRelatedToStatus_name").removeAttr("readonly");
             jQuery("#jform_FileRelatedToStatus_name").attr("disabled", true);
             jQuery("#filestatusid .field-calendar").fadeOut("fast");
             jQuery("#jform_DateRelatedToStatus").attr("disabled", true);
-            // remove the validate-relatedfile class since we have selected no status and don't need to validate the related file.
-            event.currentTarget.classList.remove('validate-relatedfile');
         }
     })
     //Form Validation
@@ -157,16 +151,9 @@ jQuery(document).ready(function () {
         const fileStatus = jQuery("#jform_FileStatus").val();
         const fileRelatedToStatus = jQuery("#jform_FileRelatedToStatus_name").val();
         const dateRelatedToStatus = jQuery("#jform_DateRelatedToStatus").val();
-        
-        // regular express to match a file name with a 3 or 4 digit extension
-        const regex = /^.+\.([^.]{3,4})$/;
-        
-        // test the file name against the regular expression
-        const validFile = regex.test(fileRelatedToStatus);
-        
         //If a status that requires a related file doesn't have one then alert error
-        if ((fileStatus == '0' || fileStatus == '1' || fileStatus == '2' || fileStatus == '5') && (fileRelatedToStatus === "Related File" || !validFile)) {
-           alert("Please select a Related File");
+        if ((fileStatus == '0' || fileStatus == '1' || fileStatus == '2' || fileStatus == '5') && (fileRelatedToStatus === "Related File")) {
+            alert("Please select a Related File");
             return false;
         } else if (fileStatus == '4' && dateRelatedToStatus == '') {
             alert("Please select a Date");
@@ -180,7 +167,7 @@ EOD;
 
 
 		$css = '
-		#filestatusid .input-group {
+		#filestatusid .input-prepend {
             margin-left : 10px;
             display: none;
 		}
@@ -189,15 +176,6 @@ EOD;
 			margin-left: 10px;
 			display: none;
 		}
-		
-		#filestatusid .input-group {
-		align-items: center;
-		}
-		#filestatusid .control-group {
-		flex-wrap: nowrap;
-		margin-bottom: 0;
-		margin-right: 1rem;
-        }
 		';
 
 		// Add styles
@@ -214,7 +192,7 @@ EOD;
 		}
 		$title = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
 
-		$html[] = RSFilesAdapterGrid::inputGroup('<input type="text" id="' . $this->id . '_name" name="' . $this->name . '" value="' . $this->value . '" disabled="disabled" class="form-control" />', null, '<a class="btn btn-primary" title="' . JText::_('COM_RSFILES_CHANGE_DOWNLOAD_ROOT') . '"  href="javascript:void(0)" onclick="jQuery(\'#rsfFoldersModal\').modal(\'show\');"><i class="icon-file"></i> ' . JText::_('JSELECT') . '</a> <a class="btn btn-danger" title="' . JText::_('COM_RSFILES_CLEAR') . '"  href="javascript:void(0)" onclick="jDeselectFolder();"><i class="icon-remove"></i></a>');
+		$html[] = RSFilesAdapterGrid::inputGroup('<input type="text" class="input-large form-control" id="' . $this->id . '_name" name="' . $this->name . '" value="' . $this->value . '" disabled="disabled" />', null, '<a class="btn btn-primary" title="' . JText::_('COM_RSFILES_CHANGE_DOWNLOAD_ROOT') . '"  href="javascript:void(0)" onclick="jQuery(\'#rsfFoldersModal\').modal(\'show\');"><i class="icon-file"></i> ' . JText::_('JSELECT') . '</a> <a class="btn btn-danger" title="' . JText::_('COM_RSFILES_CLEAR') . '"  href="javascript:void(0)" onclick="jDeselectFolder();"><i class="icon-remove"></i></a>');
 
 		$class = '';
 		if ($this->required)
