@@ -3341,7 +3341,7 @@ class rsfilesModelRsfiles extends JModelLegacy
 			$rRoot = ltrim($rRoot, $this->ds);
 
 			$session->set('rsfilesdownloadfolder', $aRoot);
-			$session->set('rsf_absolute_root', $d_root);
+			$session->set('rsf_absolute_root', $aRoot);
 			$session->set('rsf_relative_root', $rRoot);
 		}
 
